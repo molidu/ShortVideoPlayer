@@ -15,14 +15,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       
-      # 使用新版命令行工具安装 NDK
       - name: Setup Android SDK and NDK
         run: |
-          # 安装 cmdline-tools（新版 sdkmanager）
           sudo apt-get update
           sudo apt-get install -y wget unzip
           
-          # 下载并安装 Android cmdline-tools
           mkdir -p $HOME/android-sdk/cmdline-tools
           cd $HOME/android-sdk/cmdline-tools
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
@@ -30,23 +27,21 @@ jobs:
           mv cmdline-tools latest
           rm commandlinetools-linux-11076708_latest.zip
           
-          # 设置环境变量
           export ANDROID_SDK_ROOT=$HOME/android-sdk
           export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
           
-          # 接受许可证
           yes | sdkmanager --licenses > /dev/null 2>&1
-          
-          # 安装 NDK 21
           sdkmanager "ndk;21.4.7075529"
           
-          # 创建 local.properties
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           echo "ndk.dir=$ANDROID_SDK_ROOT/ndk/21.4.7075529" >> local.properties
       
       - name: Build APK
         run: |
           chmod +x gradlew
+          # 关键：强制覆盖 NDK 路径，忽略系统默认
+          export ANDROID_NDK_HOME=$HOME/android-sdk/ndk/21.4.7075529
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
           ./gradlew assembleDebug
       
       - name: Upload APK
