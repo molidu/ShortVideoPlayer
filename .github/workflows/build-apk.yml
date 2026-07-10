@@ -9,12 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Setup JDK 8（适配Gradle4.10老项目）
+      - name: Setup JDK
         uses: actions/setup-java@v4.2.1
         with:
-          java-version: '8'
-          distribution: 'temurin'
-          cache: gradle
+            java-version: '17'
+           distribution: 'temurin'
+           cache: gradle
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
