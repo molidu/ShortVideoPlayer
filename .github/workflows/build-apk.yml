@@ -9,12 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Setup JDK
+      - name: Setup JDK 8 适配旧Gradle
         uses: actions/setup-java@v4.2.1
         with:
-            java-version: '17'
-           distribution: 'temurin'
-           cache: gradle
+          java-version: '8'
+          distribution: 'temurin'
+          cache: gradle
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -30,3 +30,4 @@ jobs:
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/*.apk
+
