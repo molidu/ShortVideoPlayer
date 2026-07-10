@@ -9,10 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Set up JDK 17
+      - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '11'           # 从 17 改成 11
           distribution: 'temurin'
       
       - name: Setup Android SDK and NDK
@@ -39,7 +39,6 @@ jobs:
       - name: Build APK
         run: |
           chmod +x gradlew
-          # 关键：强制覆盖 NDK 路径，忽略系统默认
           export ANDROID_NDK_HOME=$HOME/android-sdk/ndk/21.4.7075529
           export ANDROID_SDK_ROOT=$HOME/android-sdk
           ./gradlew assembleDebug
